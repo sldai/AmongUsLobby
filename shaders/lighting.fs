@@ -37,7 +37,7 @@ uniform Material material;
 uniform PointLight pointlight;
 uniform SpotLight spotlight;
 
-vec3 calc_phone(vec3 lightDir, vec3 viewDir, vec3 lightColor, float brightness, Material m){
+vec3 calc_phong(vec3 lightDir, vec3 viewDir, vec3 lightColor, float brightness, Material m){
     // ambient
     vec3 ambient = m.ambient;
     // diffuse 
@@ -54,6 +54,7 @@ vec3 calc_phone(vec3 lightDir, vec3 viewDir, vec3 lightColor, float brightness, 
     return result;
 }
 
+
 void main()
 {
     //-------------------point light---------------//
@@ -65,24 +66,8 @@ void main()
     float pointlight_distance    = length(pointlight.position - FragPos);
     float pointlight_attenuation = 1.0 / (pointlight.constant + pointlight.linear * pointlight_distance + pointlight.quadratic * (pointlight_distance * pointlight_distance));  
     float pointlight_brightness = clamp(pointlight_attenuation, 0, 1);
-    vec3 pointlight_result = calc_phone(pointlight_dir, viewDir, pointlight_color, pointlight_brightness, material);
-
-    //-------------spot light----------------
-    vec3 spotlight_dir = normalize(spotlight.position - FragPos);
     
-    // check if lighting is inside the spotlight cone
-    float theta = dot(spotlight_dir, normalize(-spotlight.direction)); 
-    float spotlight_brightness = 1.0;
-    if(theta > spotlight.cutOff) // in the range
-    {    
-        spotlight_brightness = theta;
-        float spotlight_distance = length(spotlight.position - FragPos);
-        spotlight_brightness *= 1.0 / (spotlight.constant + spotlight.linear * spotlight_distance + spotlight.quadratic * (spotlight_distance * spotlight_distance));  
-    }
-    else 
-    {
-        spotlight_brightness = 0.0;
-    }
-    vec3 spotlight_result = calc_phone(spotlight_dir, viewDir, spotlight.color, spotlight_brightness, material);
-    FragColor = vec4(pointlight_result+spotlight_result, 1.0);
+    vec3 pointlight_result = calc_phong(pointlight_dir, viewDir, pointlight_color, pointlight_brightness, material);
+
+    FragColor = vec4(pointlight_result, 1.0);
 } 

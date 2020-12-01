@@ -1,11 +1,11 @@
 #pragma once
-#include "Object.h"
+#include "Geometry.h"
 
-class PointLight
+class PointLight : public Geometry
 {
 public:
-	glm::vec3 position;
-	glm::vec3 color;
+    glm::vec3 position;
+    glm::vec3 color;
 
     float constant;
     float linear;
@@ -13,7 +13,7 @@ public:
 
     bool status;
 
-    PointLight(): status(true) {
+    PointLight() : status(true) {
         position = glm::vec3(0.0, 3.0, 0.0);
         color = glm::vec3(1.0);
         constant = 1.0;
@@ -21,12 +21,13 @@ public:
         quadratic = 0.0;
     }
 
-    PointLight(glm::vec3 position, glm::vec3 color, float constant, float linear, float quadratic): status(true) {
+    PointLight(glm::vec3 position, glm::vec3 color, float constant, float linear, float quadratic) : status(true) {
         this->position = position;
         this->color = color;
         this->constant = constant;
         this->linear = linear;
         this->quadratic = quadratic;
     }
-};
 
+    void draw(glm::mat4 T) {} // do noting
+};
