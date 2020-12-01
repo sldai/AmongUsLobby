@@ -7,6 +7,7 @@ Amoung Us Lobby
 
 There several features:
 * Texture rendering
+* Scene graph
 * Toon shader
 * Particle effect
 * Collision detection
